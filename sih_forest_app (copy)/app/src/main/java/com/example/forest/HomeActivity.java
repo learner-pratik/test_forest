@@ -41,18 +41,6 @@ public class HomeActivity extends AppCompatActivity {
 
     LinearLayout cvMap,cvPrediction,cvTask,cvAlert;
 
-    private WifiManager wifiManager;
-    private ConnectivityManager connectivityManager;
-    private BroadcastReceiver broadcastReceiver;
-    private IntentFilter intentFilter;
-
-    public static Intent internetService;
-    public static Intent mqttService;
-    public static Intent forestService;
-    public static boolean internetServiceFlag = false;
-    public static boolean mqttServiceFlag = false;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,18 +49,6 @@ public class HomeActivity extends AppCompatActivity {
         cvPrediction=findViewById(R.id.cvPrediction);
         cvTask=findViewById(R.id.cvTask);
         cvAlert=findViewById(R.id.cvAlert);
-
-        internetService = new Intent(HomeActivity.this, InternetService.class);
-        mqttService = new Intent(HomeActivity.this, MqttService.class);
-        forestService = new Intent(HomeActivity.this, ForestService.class);
-
-        wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        broadcastReceiver = new WifiBroadcastReceiver(wifiManager, connectivityManager);
-        intentFilter = new IntentFilter();
-        intentFilter.addAction(WifiManager.EXTRA_WIFI_STATE);
-        intentFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
-        registerReceiver(broadcastReceiver, intentFilter);
 
         if (hasPermission()) {
             getCurrentLocation();
@@ -113,12 +89,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(broadcastReceiver);
     }
 
     private void getCurrentLocation() {

@@ -2,7 +2,11 @@ package com.example.forest;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.animation.Animation;
@@ -16,6 +20,14 @@ public class SplashActivity extends AppCompatActivity {
     Animation animation;
     TextView tvSplash;
 
+    private WifiManager wifiManager;
+    private BroadcastReceiver broadcastReceiver;
+    private IntentFilter intentFilter;
+
+    public static Intent internetService;
+    public static Intent mqttService;
+    public static Intent forestService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +35,17 @@ public class SplashActivity extends AppCompatActivity {
         animation = AnimationUtils.loadAnimation(this,R.anim.a1);
         //tvSplash=findViewById(R.id.tvSplash);
 
+        wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        broadcastReceiver = new WifiBroadcastReceiver(wifiManager);
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(WifiManager.EXTRA_WIFI_STATE);
+        intentFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+        registerReceiver(broadcastReceiver, intentFilter);
+
+        internetService = new Intent(SplashActivity.this, InternetService.class);
+        mqttService = new Intent(SplashActivity.this, MqttService.class);
+        forestService = new Intent(SplashActivity.this, ForestService.class);
+        startService(internetService);
 
 //        tvSplash.startAnimation(animation);
 

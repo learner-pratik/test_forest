@@ -47,7 +47,7 @@ import static com.example.forest.HomeActivity.mqttflag;
 public class MqttService extends Service {
     private static final String TAG = "ServiceMqtt";
 
-    public static final String ipAddress = "192.168.0.104";
+    public static final String ipAddress = "192.168.43.25";
 
     private final String protocol = "tcp";
     private final String port = "1883";
@@ -96,7 +96,6 @@ public class MqttService extends Service {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     // We are connected
-                    mqttflag = true;
                     Log.d(TAG, "onSuccess");
                     try {
                         String[] topics = {hunter_topic, camera_topic, map_alert_topic};
@@ -125,6 +124,7 @@ public class MqttService extends Service {
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     // Something went wrong e.g. connection timeout or firewall problems
+                    mqttflag = false;
                     Log.d(TAG, "onFailure");
 
                 }
@@ -181,16 +181,6 @@ public class MqttService extends Service {
         });
 
         return START_STICKY;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        try {
-            client.disconnect();
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
     }
 
     private void sendNotification(String id) {

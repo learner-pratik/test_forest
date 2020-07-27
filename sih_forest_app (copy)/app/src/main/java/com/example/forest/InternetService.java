@@ -78,12 +78,13 @@ public class InternetService extends Service {
                         String camera_id = camera_details.get("camera_id").toString();
                         String latitude = camera_details.get("latitude").toString();
                         String longitude = camera_details.get("longitude").toString();
-
-                        String final_camera_details = camera_id+"/"+latitude+"/"+longitude+"\n";
+                        String timstamp = camera_details.get("time").toString();
+                        String final_camera_details = camera_id+"/"+latitude+"/"+longitude+"/"+timstamp+"\n";
 
                         List<String> list = new ArrayList<>();
                         list.add(latitude);
                         list.add(longitude);
+                        list.add(timstamp);
 
                         writeToFile(final_camera_details);
                         AlertActivity.map.put(camera_id, list);
@@ -110,12 +111,13 @@ public class InternetService extends Service {
                         String camera_id = camera_details.get("camera_id").toString();
                         String latitude = camera_details.get("latitude").toString();
                         String longitude = camera_details.get("longitude").toString();
-
-                        String final_camera_details = camera_id+"/"+latitude+"/"+longitude+"/c"+"\n";
+                        String timestamp = camera_details.get("time").toString();
+                        String final_camera_details = camera_id+"/"+latitude+"/"+longitude+"/"+timestamp+"/c"+"\n";
 
                         List<String> list = new ArrayList<>();
                         list.add(latitude);
                         list.add(longitude);
+                        list.add(timestamp);
 
                         writeToFile(final_camera_details);
                         AlertActivity.map_c.put(camera_id, list);
